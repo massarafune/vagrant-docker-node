@@ -1,8 +1,28 @@
 version: "3"
 services:
-    node:
-        build:
-            context: ./node
-        volumes:
-            - ./node:/usr/src/app/node
-            - /usr/src/app/node/node_modules
+  node:
+    image: "masumiarafune/node-api"
+    container_name: "node"
+    command: "npm start"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./node:/src
+    networks:
+      - docker-network
+
+  react-app:
+    image: "masumiarafune/react-app"
+    container_name: "react-app"
+    command: "npm start"
+    ports:
+      - "80:3000"
+    volumes:
+      - ./react-app:/src
+    tty: true
+    networks:
+      - docker-network
+
+networks:
+  docker-network:
+    driver: bridge
